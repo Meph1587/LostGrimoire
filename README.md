@@ -16,7 +16,7 @@ The contract gives four main endpoints to query traits and affinities for wizard
 
 `getWizardTraits(uint256 wizardId) public view returns (uint16,uint16,uint16,uint16,uint16,uint16)`
 
-`getTraitAffinities(uint16 wizardId) public view returns (uint16[] memory)`
+`getTraitAffinities(uint16 traitId) public view returns (uint16[] memory)`
 
 `getAffinityOccurrences(uint16 affinityId) public view returns (uint16)`
 

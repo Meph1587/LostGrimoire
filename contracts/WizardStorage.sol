@@ -94,12 +94,12 @@ contract WizardStorage {
         (, t0, t1, t2, t3, t4, t5) = _decode(wizardToTraits[wizardId]);
     }
 
-    function getTraitAffinities(uint16 wizardId)
+    function getTraitAffinities(uint16 traitId)
         public
         view
         returns (uint16[] memory)
     {
-        return traitsToAffinities[wizardId];
+        return traitsToAffinities[traitId];
     }
 
     function getAffinityOccurrences(uint16 id) public view returns (uint16) {
