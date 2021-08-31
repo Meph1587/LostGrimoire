@@ -2,29 +2,32 @@ import { deployContract } from "../scripts/helpers/deploy";
 import { expect } from "chai";
 import { WizardStorage} from "../typechain";
 
-import { getFormattedTraits } from "../scripts/helpers/get-formatted-traits";
-import { makeTreeFromTraits} from "../scripts/helpers/merkletree/makeTree";
-import { makeProof} from "../scripts/helpers/merkletree/makeProof";
+import { splitToChunks} from "../scripts/helpers/lists";
+import { makeTreeFromTraits,makeTreeFromNames} from "../scripts/helpers/merkletree";
+import { getProofForTraits, getProofForName} from "../scripts/helpers/merkletree";
+import { proofName, proofTraits} from "../scripts/helpers/merkletree";
 
-const wizardsToTraits = require("../data/wizardsToTraits.json");
-const traitsToAffinities = require("../data/traitsToAffinities.json");
-const affinityToOccurrences = require("../data/affinityToOccurrences.json");
+const wizardsToTraits = require("../data/traits.json");
+const traitsToAffinities = require("../data/affinities.json");
+const affinityToOccurrences = require("../data/occurrence.json");
 
 
 describe("WizardStorage", function () {
     let storage: WizardStorage;
     let wizards: number[]
     let traitsForWizards: number[][];
-    let traits: number[][];
+    let traits: number[];
     let affinitiesForTraits: number[][][];
     let occurrences: number[][][];
-    let tree: any;
+    let treeTraits: any;
+    let treeNames: any;
     let snapshotId: any;
 
     beforeEach(async () => {
-        traitsForWizards = getFormattedTraits();
-        tree = await makeTreeFromTraits(traitsForWizards);
-        storage = (await deployContract('WizardStorage', [tree.getHexRoot()])) as WizardStorage;
+        traitsForWizards = wizardsToTraits.traits;
+        treeTraits = await makeTreeFromTraits(traitsForWizards);
+        treeNames = await makeTreeFromNames( wizardsToTraits.names);
+        storage = (await deployContract('WizardStorage', [treeTraits.getHexRoot(), treeNames.getHexRoot()])) as WizardStorage;
         wizards = wizardsToTraits.wizards;
 
         traits = traitsToAffinities.traits;
@@ -35,12 +38,21 @@ describe("WizardStorage", function () {
     });
 
     describe("when storing traits =>", function () {
-        it("can store with valid proof", async function () {
-            let wizardId = wizards[0];
-            let wizardTraits = traitsForWizards[0];
-            let validProof =  makeProof(tree, wizardTraits)
+        it("can store with valid proofs", async function () {
+            let wizardId = 6725;
+            let wizardTraits = [6725,0,28,110,190,332,288];
+            let wizardName = ["6725", "Ghost Eater Bathsheba of the Toadstools"];
 
-            await storage.storeWizardTraits(wizardId, wizardTraits, validProof)
+            let validProofTraits =  getProofForTraits(wizardTraits)
+            let validProofName =  getProofForName(wizardName)
+
+            await storage.storeWizardTraits(
+                wizardId, 
+                wizardName[1], 
+                wizardTraits, 
+                validProofName, 
+                validProofTraits
+            )
 
             expect(await storage.hasTraitsStored(wizardId)).to.be.true;
             let returnedTraits = await storage.getWizardTraits(wizardId)
@@ -51,53 +63,121 @@ describe("WizardStorage", function () {
             expect(returnedTraits.t3).to.be.eq(wizardTraits[4])
             expect(returnedTraits.t4).to.be.eq(wizardTraits[5])
             expect(returnedTraits.t5).to.be.eq(wizardTraits[6])
+
+            expect(await storage.getWizardName(wizardId)).to.be.eq(wizardName[1])
         });
 
-        it("can not store with invalid proof", async function () {
-            let wizardId = wizards[0];
-            let wizardTraits = [wizards[0], 1,2,3,4,5,6]; // invalid traits for wizard
-            let invalidProof =  makeProof(tree, wizardTraits)
+        it("can not store with invalid trait proof", async function () {
+            let wizardId = 6725;
+            let wizardTraits = [6725,1,2,3,4,5,6]; // invalid traits for wizard
+            let wizardName = ["6725", "Ghost Eater Bathsheba of the Toadstools"];
+            let invalidProofTraits =  proofTraits(treeTraits, wizardTraits)
+            let validProofName =  getProofForName(wizardName)
 
             await expect(
-                storage.storeWizardTraits(wizardId, wizardTraits, invalidProof)
-            ).to.be.revertedWith("Merkle Proof Invalid!");
+                storage.storeWizardTraits(wizardId, wizardName[1], wizardTraits, validProofName, invalidProofTraits)
+            ).to.be.revertedWith("Merkle Proof for traits is invalid!");
+            
+            expect(await storage.hasTraitsStored(wizardId)).to.be.false;
+            
+        });
+
+
+        it("can not store with invalid name proof", async function () {
+            let wizardId = 6725;
+            let wizardTraits = [6725,0,28,110,190,332,288];
+            let wizardName = ["6725", "Mephistopheles"]; //invalid name
+            let validProofTraits =  getProofForTraits(wizardTraits)
+            let invalidProofName =  proofName(treeNames, wizardName)
+
+            await expect(
+                storage.storeWizardTraits(wizardId, wizardName[1], wizardTraits, invalidProofName, validProofTraits)
+            ).to.be.revertedWith("Merkle Proof for name is invalid!");
             
             expect(await storage.hasTraitsStored(wizardId)).to.be.false;
             
         });
 
         it("can not store twice", async function () {
-            let wizardId = wizards[0];
-            let wizardTraits = traitsForWizards[0];
-            let validProof =  makeProof(tree, wizardTraits)
+            let wizardId = 6725;
+            let wizardTraits = [6725,0,28,110,190,332,288];
+            let wizardName = ["6725", "Ghost Eater Bathsheba of the Toadstools"];
+            let validProofTraits =  getProofForTraits(wizardTraits)
+            let validProofName =  getProofForName(wizardName)
 
             //ok
-            await storage.storeWizardTraits(wizardId, wizardTraits, validProof)
+            await storage.storeWizardTraits(wizardId, wizardName[1], wizardTraits, validProofName, validProofTraits)
 
             //second time nope
-            await expect(storage.storeWizardTraits(wizardId, wizardTraits, validProof)).to.be.reverted;
+            await expect(
+                storage.storeWizardTraits(wizardId, wizardName[1], wizardTraits, validProofName, validProofTraits)
+            ).to.be.revertedWith("Traits are already stored");
             
         }); 
     })
 
     describe("when storing affinities =>", function () {
         it("can store affinities during store period", async function () {
-            let traitIds = traits[0];
-            let affinities = affinitiesForTraits[0];
-
-            await storage.storeTraitAffinities(traitIds, affinities)
+            let traitIds = traits;
+            let affinities:number [][] = []
+            let identity:number [][]  = []
+            let positive:number [][]  = []
+            affinitiesForTraits.forEach(e =>{
+                    identity.push(e[0])
+                    positive.push(e[1])
+                    affinities.push(e[0].concat(e[1]))
+                });
+            
+            let traitsChunked = splitToChunks(traitIds, 50)
+            let affinitiesChunked  = splitToChunks(affinities, 50)
+            let identityChunked  = splitToChunks(identity, 50)
+            let positiveChunked  = splitToChunks(positive, 50)
+            
+            await storage.storeTraitAffinities(
+                traitsChunked[0], affinitiesChunked[0], identityChunked[0], positiveChunked[0]
+            )
 
             let result: number[] = await storage.getTraitAffinities(traitIds[0]);
 
             expect(result[0]).to.be.equal(affinities[0][0])
             expect(result[1]).to.be.equal(affinities[0][1])
+
+
+            result = await storage.getTraitIdentityAffinities(traitIds[0]);
+
+            expect(result[0]).to.be.equal(identity[0][0])
+            expect(result[1]).to.be.equal(identity[0][1])
+
+            result = await storage.getTraitPositiveAffinities(traitIds[0]);
+
+            expect(result[0]).to.be.equal(positive[0][0])
+            expect(result[1]).to.be.equal(positive[0][1])
         });
 
         it("can not store affinities after store period", async function () {
-            let traitIds = traits[0];
-            let affinities = affinitiesForTraits[0];
+            let traitIds = traits;
+            let affinities:number [][] = []
+            let identity:number [][]  = []
+            let positive:number [][]  = []
+            affinitiesForTraits.forEach(e =>{
+                    identity.push(e[0])
+                    positive.push(e[1])
+                    affinities.push(e[0].concat(e[1]))
+                });
+            
+            let traitsChunked = splitToChunks(traitIds, 50)
+            let affinitiesChunked  = splitToChunks(affinities, 50)
+            let identityChunked  = splitToChunks(identity, 50)
+            let positiveChunked  = splitToChunks(positive, 50)
+            
+             
+            
             await storage.stopStoring();
-            await expect(storage.storeTraitAffinities(traitIds, affinities)).to.be.reverted;
+            await expect(
+                storage.storeTraitAffinities(
+                    traitsChunked[0], affinitiesChunked[0], identityChunked[0], positiveChunked[0]
+                )
+            ).to.be.revertedWith("Storing is over");
         });
     })
 
@@ -128,3 +208,5 @@ describe("WizardStorage", function () {
     })
 
 });
+
+

@@ -6,7 +6,7 @@ import {storeTraits} from "./deployment/define-3-store-traits";
 import {check} from "./deployment/define-4-check";
 
 
-const DEPLOYER_ADDRESS = "0xCDb2a435a65A5a90Da1dd2C1Fe78A2df70795F91"
+const DEPLOYER_ADDRESS = "0x11dd5F745D665b8C10C16579189e0Ff3fE31ab02"
 
 
 // comment out steps to skip

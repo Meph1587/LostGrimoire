@@ -1,8 +1,8 @@
 import {DeployConfig} from "./define-0-config";
 
 import * as deploy from "../helpers/deploy";
-import {makeTreeFromTraits} from "../helpers/merkletree/makeTree";
-import { getFormattedTraits } from "../helpers/get-formatted-traits";
+import {makeTreeFromTraits,makeTreeFromNames} from "../helpers/merkletree";
+const wizardTraits = require("../../data/traits.json");
 
 import {
     WizardStorage,
@@ -11,22 +11,22 @@ import {
 export async function deployStorage(c: DeployConfig): Promise<DeployConfig> {
     console.log(`\n --- DEPLOY WIZARD STORAGE ---`);
 
-    let tree = await makeTreeFromTraits(getFormattedTraits());
-    let root = tree.getHexRoot();
-    console.log(`Merkle Tree generated with root: ${root}`);
+    let traitsTree = await makeTreeFromTraits(wizardTraits.traits);
+    let traitsTreeRoot = traitsTree.getHexRoot();
+    console.log(`Merkle Tree for Traits generated with root: ${traitsTreeRoot}`);
 
-    const wizardStorage = await deploy.deployContract('WizardStorage',[root]) as WizardStorage;
+
+    let namesTree = await makeTreeFromNames(wizardTraits.names);
+    let namesTreeRoot = namesTree.getHexRoot();
+    console.log(`Merkle Tree for Names generated with root: ${namesTreeRoot}`);
+
+    const wizardStorage = await deploy.deployContract('WizardStorage',[traitsTreeRoot, namesTreeRoot]) as WizardStorage;
     c.storage = wizardStorage;
-    c.merkleTree = tree;
+    c.merkleTreeTraits = traitsTree;
+    c.merkleTreeNames = namesTree;
     console.log(`WizardStorage deployed to: ${wizardStorage.address.toLowerCase()}`);
-    console.log(`\n>>> npx hardhat verify --network rinkeby 
-    ${wizardStorage.address.toLowerCase()}
-    ${root}
-    `);
-    console.log(`>>> npx hardhat verify --network mainnet 
-    ${wizardStorage.address.toLowerCase()}
-    ${root}
-    `);
+    console.log(`\n>>> npx hardhat verify --network rinkeby ${wizardStorage.address.toLowerCase()} ${traitsTreeRoot}`);
+    console.log(`>>> npx hardhat verify --network mainnet ${wizardStorage.address.toLowerCase()}${traitsTreeRoot}`);
 
     return c;
 }

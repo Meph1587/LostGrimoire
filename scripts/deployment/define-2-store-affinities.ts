@@ -1,10 +1,11 @@
 import {DeployConfig} from "./define-0-config";
+import { splitToChunks} from "../../scripts/helpers/lists";
 import {
     WizardStorage as WS,
 } from "../../typechain";
 
-const affinityToOccurrences = require("../../data/AffinityToOccurrences.json");
-const traitsToAffinities = require("../../data/TraitsToAffinities.json");
+const affinityToOccurrences = require("../../data/occurrence.json");
+const traitsToAffinities = require("../../data/affinities.json");
 const WizardStorage = require( "../../abi/WizardStorage.json")
 
 
@@ -20,9 +21,6 @@ export async function storeAffinities(c: DeployConfig): Promise<DeployConfig> {
     */
 
     console.log(`\n --- STORE: AFFINITIES => OCCURRENCES ---`);
-
-    let affinities = traitsToAffinities.affinities;
-    let traits = traitsToAffinities.traits;
     
     let affinitiesGrouped = [[]]
     let occurrencesGrouped = [[]]
@@ -45,10 +43,37 @@ export async function storeAffinities(c: DeployConfig): Promise<DeployConfig> {
 
     console.log(`\n --- STORE: TRAITS => AFFINITIES ---`);
 
-    for (let i=0; i < traits.length;i++){
-        let tx = await storage.storeTraitAffinities(traits[i], affinities[i]) 
+    let traitIds = traitsToAffinities.traits;
+   
+    let affinities:number[][] = []
+    let identity:number[][] = []
+    let positive:number[][] = []
+    traitsToAffinities.affinities.forEach(e =>{
+        identity.push(e[0])
+        positive.push(e[1])
+        affinities.push(e[0].concat(e[1]))
+    });
+    
+    //deduplicate for affinities both identity and positive
+    let filteredAffinities = []
+    affinities.forEach(sublist =>{
+        filteredAffinities.push(sublist.filter((element, i) => i === sublist.indexOf(element)))
+    })
+
+    console.log(affinities[10])
+    console.log(filteredAffinities[10])
+
+    let traitsChunked = splitToChunks(traitIds, 50)
+    let affinitiesChunked  = splitToChunks(filteredAffinities, 50)
+    let identityChunked  = splitToChunks(identity, 50)
+    let positiveChunked  = splitToChunks(positive, 50)
+
+    for (let i=0; i < traitsChunked.length;i++){
+        let tx = await storage.storeTraitAffinities(
+            traitsChunked[i], affinitiesChunked[i], identityChunked[i], positiveChunked[i]
+        )
         await tx.wait()
-        console.log(`WizardStorage: affinities stored on ids from: ${i*200} to ${(i*200+200)}`)
+        console.log(`WizardStorage: affinities stored on ids from: ${i*50} to ${(i*50+50)}`)
     };
 
    

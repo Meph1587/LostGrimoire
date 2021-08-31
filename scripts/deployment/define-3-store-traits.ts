@@ -1,13 +1,12 @@
 import {DeployConfig} from "./define-0-config";
-import {makeProof} from "../helpers/merkletree/makeProof";
-import { getFormattedTraits } from "../helpers/get-formatted-traits";
+import {proofTraits, proofName} from "../helpers/merkletree";
 
 import {
     WizardStorage as WS,
 } from "../../typechain";
 
 
-const wizardsToTraits = require("../../data/wizardsToTraits.json");
+const wizardsToTraits = require("../../data/traits.json");
 const WizardStorage = require( "../../abi/WizardStorage.json")
 
 
@@ -27,18 +26,28 @@ export async function storeTraits(c: DeployConfig): Promise<DeployConfig> {
     console.log(`>>>> only run this in local network for testing!`);
 
 
-    let wizards: number[] = wizardsToTraits.wizards;
-    let traits = getFormattedTraits();
-    let proofs = [];
+    let wizards= wizardsToTraits.wizards;
+    let traits = wizardsToTraits.traits;
+    let names =  wizardsToTraits.names;
+
+
+
+    let proofsTraits = [];
+    let proofsNames = [];
     traits.forEach(element => {
-       proofs.push(makeProof(c.merkleTree as any, element))
+        proofsTraits.push(proofTraits(c.merkleTreeTraits as any, element))
+    })
+    names.forEach(element => {
+        proofsNames.push(proofName(c.merkleTreeNames as any,element))
     })
 
     for (let i=0; i < wizards.length;i++){
         await storage.storeWizardTraits(
             wizards[i],
+            names[i][1],
             traits[i],
-            proofs[i],
+            proofsNames[i],
+            proofsTraits[i]
         )
         if (i%1000 == 0) {
             console.log(`WizardStorage: traits stored up to ${i}`)

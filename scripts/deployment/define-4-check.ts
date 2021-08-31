@@ -19,21 +19,31 @@ export async function check(c: DeployConfig): Promise<DeployConfig> {
 
     for (let i=0; i < 10; i++){
         let occurrence = await storage.getAffinityOccurrences(i);
-        console.log(`Affinity ${i} - occurrence ${occurrence}`)
+        console.log(`\nAffinity ${i} - occurrence ${occurrence}`)
     };
 
     for (let i=10; i < 20; i++){
         let affinities = await storage.getTraitAffinities(i);
-        console.log(`Trait ${i} - affinities ${affinities}`)
+        console.log(`\nTrait ${i} - affinities ${affinities}`)
+        let identity = await storage.getTraitIdentityAffinities(i);
+        console.log(`Trait ${i} - identity ${identity}`)
+        let positive = await storage.getTraitPositiveAffinities(i);
+        console.log(`Trait ${i} - positive ${positive}`)
     };
 
     for (let i=0; i < 10; i++){
+        let name = await storage.getWizardName(i);
+        console.log(`\nWizard: ${i} name: ${name}`)
         let traitsEncoded = await storage.getWizardTraitsEncoded(i);
         console.log(`Wizard: ${i} traitsEncoded: ${traitsEncoded}`)
         let traits = await storage.getWizardTraits(i);
         console.log(`Wizard: ${i} traits: ${traits}`)
         let affinities = await storage.getWizardAffinities(i);
         console.log(`Wizard: ${i} affinities ${affinities}`)
+        let identity = await storage.getWizardIdentityAffinities(i);
+        console.log(`Wizard: ${i} identity ${identity}`)
+        let positive = await storage.getWizardPositiveAffinities(i);
+        console.log(`Wizard: ${i} positive ${positive}`)
     };
     
 
