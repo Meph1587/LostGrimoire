@@ -9,6 +9,7 @@
     "clean": "hardhat clean",
     "run": "hardhat run",
     "deploy": "hardhat run ./scripts/run_deploy.ts",
+    "decode": "hardhat run ./scripts/decoder/decode.ts",
     "compile-and-test": "yarn run compile && hardhat test",
     "coverage": "FORKING_ENABLED=false hardhat coverage --temp artifacts ",
     "lint": "yarn run lint:ts && npm run lint:sol",

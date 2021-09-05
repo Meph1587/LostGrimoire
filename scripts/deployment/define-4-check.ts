@@ -1,18 +1,18 @@
 import {DeployConfig} from "./define-0-config";
 
 import {
-    WizardStorage as WS,
+    ForgottenGrimoire as FG,
 } from "../../typechain";
 
 export async function check(c: DeployConfig): Promise<DeployConfig> {
     
-    let storage = c.storage as WS;
+    let storage = c.storage as FG;
      /* --- when using network forking un-comment this and set address
         let storage = new Contract(
             "0x58681F649B52E42B113BbA5D3806757c114E3578",
-            WizardStorage,
+            ForgottenGrimoire,
             c.ownerAcc
-        ) as WS
+        ) as FG
     */
    
     console.log(`\n -- CHECK --`);

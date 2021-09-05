@@ -2,23 +2,23 @@ import {DeployConfig} from "./define-0-config";
 import {proofTraits, proofName} from "../helpers/merkletree";
 
 import {
-    WizardStorage as WS,
+    ForgottenGrimoire as FG,
 } from "../../typechain";
 
 
 const wizardsToTraits = require("../../data/traits.json");
-const WizardStorage = require( "../../abi/WizardStorage.json")
+const ForgottenGrimoire = require( "../../abi/ForgottenGrimoire.json")
 
 
 export async function storeTraits(c: DeployConfig): Promise<DeployConfig> {
     
-    let storage = c.storage as WS;
+    let storage = c.storage as FG;
     /* --- when using network forking un-comment this and set address
         let storage = new Contract(
             "0x58681F649B52E42B113BbA5D3806757c114E3578",
-            WizardStorage,
+            ForgottenGrimoire,
             c.ownerAcc
-        ) as WS
+        ) as FG
     */
 
 
@@ -50,7 +50,7 @@ export async function storeTraits(c: DeployConfig): Promise<DeployConfig> {
             proofsTraits[i]
         )
         if (i%1000 == 0) {
-            console.log(`WizardStorage: traits stored up to ${i}`)
+            console.log(`ForgottenGrimoire: traits stored up to ${i}`)
         }
     };
 

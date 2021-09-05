@@ -1,23 +1,23 @@
 import {DeployConfig} from "./define-0-config";
 import { splitToChunks} from "../../scripts/helpers/lists";
 import {
-    WizardStorage as WS,
+    ForgottenGrimoire as FG,
 } from "../../typechain";
 
 const affinityToOccurrences = require("../../data/occurrence.json");
 const traitsToAffinities = require("../../data/affinities.json");
-const WizardStorage = require( "../../abi/WizardStorage.json")
+const ForgottenGrimoire = require( "../../abi/ForgottenGrimoire.json")
 
 
 export async function storeAffinities(c: DeployConfig): Promise<DeployConfig> {
     
-    let storage = c.storage as WS;
+    let storage = c.storage as FG;
     /* --- when using network forking un-comment this and set address
         let storage = new Contract(
             "0x58681F649B52E42B113BbA5D3806757c114E3578",
-            WizardStorage,
+            ForgottenGrimoire,
             c.ownerAcc
-        ) as WS
+        ) as FG
     */
 
     console.log(`\n --- STORE: AFFINITIES => OCCURRENCES ---`);
@@ -36,7 +36,7 @@ export async function storeAffinities(c: DeployConfig): Promise<DeployConfig> {
     for (let i=0; i < affinitiesGrouped.length;i++){
         let tx = await storage.storeAffinityOccurrences(affinitiesGrouped[i], occurrencesGrouped[i])
         await tx.wait()
-        console.log(`WizardStorage: occurrences stored on ids from: ${i*100} to ${(i*100+100)}`)
+        console.log(`ForgottenGrimoire: occurrences stored on ids from: ${i*100} to ${(i*100+100)}`)
     };
         
 
@@ -60,20 +60,17 @@ export async function storeAffinities(c: DeployConfig): Promise<DeployConfig> {
         filteredAffinities.push(sublist.filter((element, i) => i === sublist.indexOf(element)))
     })
 
-    console.log(affinities[10])
-    console.log(filteredAffinities[10])
-
-    let traitsChunked = splitToChunks(traitIds, 50)
     let affinitiesChunked  = splitToChunks(filteredAffinities, 50)
     let identityChunked  = splitToChunks(identity, 50)
     let positiveChunked  = splitToChunks(positive, 50)
+    let traitsChunked = splitToChunks(traitIds, 50)
 
     for (let i=0; i < traitsChunked.length;i++){
         let tx = await storage.storeTraitAffinities(
             traitsChunked[i], affinitiesChunked[i], identityChunked[i], positiveChunked[i]
         )
         await tx.wait()
-        console.log(`WizardStorage: affinities stored on ids from: ${i*50} to ${(i*50+50)}`)
+        console.log(`ForgottenGrimoire: affinities stored on ids from: ${i*50} to ${(i*50+50)}`)
     };
 
    

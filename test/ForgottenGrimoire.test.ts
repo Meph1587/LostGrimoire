@@ -1,6 +1,6 @@
 import { deployContract } from "../scripts/helpers/deploy";
 import { expect } from "chai";
-import { WizardStorage} from "../typechain";
+import { ForgottenGrimoire} from "../typechain";
 
 import { splitToChunks} from "../scripts/helpers/lists";
 import { makeTreeFromTraits,makeTreeFromNames} from "../scripts/helpers/merkletree";
@@ -12,8 +12,8 @@ const traitsToAffinities = require("../data/affinities.json");
 const affinityToOccurrences = require("../data/occurrence.json");
 
 
-describe("WizardStorage", function () {
-    let storage: WizardStorage;
+describe("ForgottenGrimoire", function () {
+    let storage: ForgottenGrimoire;
     let wizards: number[]
     let traitsForWizards: number[][];
     let traits: number[];
@@ -27,7 +27,7 @@ describe("WizardStorage", function () {
         traitsForWizards = wizardsToTraits.traits;
         treeTraits = await makeTreeFromTraits(traitsForWizards);
         treeNames = await makeTreeFromNames( wizardsToTraits.names);
-        storage = (await deployContract('WizardStorage', [treeTraits.getHexRoot(), treeNames.getHexRoot()])) as WizardStorage;
+        storage = (await deployContract('ForgottenGrimoire', [treeTraits.getHexRoot(), treeNames.getHexRoot()])) as ForgottenGrimoire;
         wizards = wizardsToTraits.wizards;
 
         traits = traitsToAffinities.traits;
@@ -65,6 +65,10 @@ describe("WizardStorage", function () {
             expect(returnedTraits.t5).to.be.eq(wizardTraits[6])
 
             expect(await storage.getWizardName(wizardId)).to.be.eq(wizardName[1])
+
+
+
+            expect(await storage.wizardHasTrait(wizardId, 28)).to.be.true;
         });
 
         it("can not store with invalid trait proof", async function () {

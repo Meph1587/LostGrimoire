@@ -5,7 +5,7 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "hardhat/console.sol";
 
-contract WizardStorage {
+contract ForgottenGrimoire {
     mapping(uint256 => bool) public hasTraitsStored;
 
     bool private canStoreAffinities = true;
@@ -148,6 +148,75 @@ contract WizardStorage {
         returns (string memory)
     {
         return wizardToName[wizardId];
+    }
+
+    function wizardAffintyCount(uint256 wizardId, uint16 affinity)
+        public
+        view
+        returns (uint256 affinityCount)
+    {
+        uint16[] memory wizAffinities = getWizardAffinities(wizardId);
+        // count how many times selected wizard has affinity
+        affinityCount = 0;
+        for (uint8 i = 0; i < wizAffinities.length; i++) {
+            if (wizAffinities[i] == affinity) {
+                affinityCount += 1;
+            }
+        }
+    }
+
+    function wizardIdentityAffintyCount(uint256 wizardId, uint16 affinity)
+        public
+        view
+        returns (uint256 affinityCount)
+    {
+        uint16[] memory wizAffinities = getWizardIdentityAffinities(wizardId);
+        // count how many times selected wizard has affinity
+        affinityCount = 0;
+        for (uint8 i = 0; i < wizAffinities.length; i++) {
+            if (wizAffinities[i] == affinity) {
+                affinityCount += 1;
+            }
+        }
+    }
+
+    function wizardPositiveAffintyCount(uint256 wizardId, uint16 affinity)
+        public
+        view
+        returns (uint256 affinityCount)
+    {
+        uint16[] memory wizAffinities = getWizardPositiveAffinities(wizardId);
+        // count how many times selected wizard has affinity
+        affinityCount = 0;
+        for (uint8 i = 0; i < wizAffinities.length; i++) {
+            if (wizAffinities[i] == affinity) {
+                affinityCount += 1;
+            }
+        }
+    }
+
+    function wizardHasTrait(uint256 wizardId, uint16 trait)
+        public
+        view
+        returns (bool)
+    {
+        (
+            ,
+            uint16 t0,
+            uint16 t1,
+            uint16 t2,
+            uint16 t3,
+            uint16 t4,
+            uint16 t5
+        ) = _decode(wizardToTraits[wizardId]);
+        uint16[6] memory wizTraits = [t0, t1, t2, t3, t4, t5];
+
+        for (uint8 i = 0; i < wizTraits.length; i++) {
+            if (wizTraits[i] == trait) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function getWizardAffinities(uint256 wizardId)

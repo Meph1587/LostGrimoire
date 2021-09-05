@@ -37,7 +37,7 @@ const cfg: HardhatUserConfig = {
     etherscan: config.etherscan,
 
     abiExporter: {
-        only: [ 'WizardStorage'],
+        only: [ 'ForgottenGrimoire'],
         except: ['.*Mock$'],
         clear: true,
         flat: true,
