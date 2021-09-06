@@ -5,7 +5,7 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "hardhat/console.sol";
 
-contract ForgottenGrimoire {
+contract Grimoire {
     mapping(uint256 => bool) public hasTraitsStored;
 
     bool private canStoreAffinities = true;

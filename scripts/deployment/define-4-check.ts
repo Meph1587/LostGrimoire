@@ -1,7 +1,7 @@
 import {DeployConfig} from "./define-0-config";
 
 import {
-    ForgottenGrimoire as FG,
+    Grimoire as FG,
 } from "../../typechain";
 
 export async function check(c: DeployConfig): Promise<DeployConfig> {
@@ -10,7 +10,7 @@ export async function check(c: DeployConfig): Promise<DeployConfig> {
      /* --- when using network forking un-comment this and set address
         let storage = new Contract(
             "0x58681F649B52E42B113BbA5D3806757c114E3578",
-            ForgottenGrimoire,
+            Grimoire,
             c.ownerAcc
         ) as FG
     */

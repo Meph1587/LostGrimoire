@@ -3,7 +3,7 @@ import {getAccount, impersonateAccount} from "../helpers/accounts";
 import {Signer} from "ethers";
 
 import {
-    ForgottenGrimoire,
+    Grimoire,
 } from "../../typechain";
 
 export async function deployConfig(owner:string): Promise<DeployConfig> {
@@ -16,7 +16,7 @@ export async function deployConfig(owner:string): Promise<DeployConfig> {
 export class DeployConfig {
     public owner: string;
     public ownerAcc: Signer;
-    public storage?: ForgottenGrimoire;
+    public storage?: Grimoire;
     public merkleTreeTraits?: any;
     public merkleTreeNames?: any;
     public storageAddr: string;

@@ -1,12 +1,12 @@
 import {DeployConfig} from "./define-0-config";
 import { splitToChunks} from "../../scripts/helpers/lists";
 import {
-    ForgottenGrimoire as FG,
+    Grimoire as FG,
 } from "../../typechain";
 
 const affinityToOccurrences = require("../../data/occurrence.json");
 const traitsToAffinities = require("../../data/affinities.json");
-const ForgottenGrimoire = require( "../../abi/ForgottenGrimoire.json")
+//const Grimoire = require( "../../abi/Grimoire.json")
 
 
 export async function storeAffinities(c: DeployConfig): Promise<DeployConfig> {
@@ -15,7 +15,7 @@ export async function storeAffinities(c: DeployConfig): Promise<DeployConfig> {
     /* --- when using network forking un-comment this and set address
         let storage = new Contract(
             "0x58681F649B52E42B113BbA5D3806757c114E3578",
-            ForgottenGrimoire,
+            Grimoire,
             c.ownerAcc
         ) as FG
     */
@@ -36,7 +36,7 @@ export async function storeAffinities(c: DeployConfig): Promise<DeployConfig> {
     for (let i=0; i < affinitiesGrouped.length;i++){
         let tx = await storage.storeAffinityOccurrences(affinitiesGrouped[i], occurrencesGrouped[i])
         await tx.wait()
-        console.log(`ForgottenGrimoire: occurrences stored on ids from: ${i*100} to ${(i*100+100)}`)
+        console.log(`Grimoire: occurrences stored on ids from: ${i*100} to ${(i*100+100)}`)
     };
         
 
@@ -70,7 +70,7 @@ export async function storeAffinities(c: DeployConfig): Promise<DeployConfig> {
             traitsChunked[i], affinitiesChunked[i], identityChunked[i], positiveChunked[i]
         )
         await tx.wait()
-        console.log(`ForgottenGrimoire: affinities stored on ids from: ${i*50} to ${(i*50+50)}`)
+        console.log(`Grimoire: affinities stored on ids from: ${i*50} to ${(i*50+50)}`)
     };
 
    

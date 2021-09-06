@@ -5,11 +5,11 @@ import {makeTreeFromTraits,makeTreeFromNames} from "../helpers/merkletree";
 const wizardTraits = require("../../data/traits.json");
 
 import {
-    ForgottenGrimoire,
+    Grimoire,
 } from "../../typechain";
 
 export async function deployStorage(c: DeployConfig): Promise<DeployConfig> {
-    console.log(`\n --- DEPLOY FORGOTTEN GRIMOIRE ---`);
+    console.log(`\n --- DEPLOY THE LOST GRIMOIRE ---`);
 
     let traitsTree = await makeTreeFromTraits(wizardTraits.traits);
     let traitsTreeRoot = traitsTree.getHexRoot();
@@ -20,13 +20,13 @@ export async function deployStorage(c: DeployConfig): Promise<DeployConfig> {
     let namesTreeRoot = namesTree.getHexRoot();
     console.log(`Merkle Tree for Names generated with root: ${namesTreeRoot}`);
 
-    const forgottenGrimoire = await deploy.deployContract('ForgottenGrimoire',[traitsTreeRoot, namesTreeRoot]) as ForgottenGrimoire;
-    c.storage = forgottenGrimoire;
+    const grimoire = await deploy.deployContract('Grimoire',[traitsTreeRoot, namesTreeRoot]) as Grimoire;
+    c.storage = grimoire;
     c.merkleTreeTraits = traitsTree;
     c.merkleTreeNames = namesTree;
-    console.log(`ForgottenGrimoire deployed to: ${forgottenGrimoire.address.toLowerCase()}`);
-    console.log(`\n>>> npx hardhat verify --network rinkeby ${forgottenGrimoire.address.toLowerCase()} ${traitsTreeRoot} ${namesTreeRoot}`);
-    console.log(`>>> npx hardhat verify --network mainnet ${forgottenGrimoire.address.toLowerCase()}${traitsTreeRoot} ${namesTreeRoot}`);
+    console.log(`Grimoire deployed to: ${grimoire.address.toLowerCase()}`);
+    console.log(`\n>>> npx hardhat verify --network rinkeby ${grimoire.address.toLowerCase()} ${traitsTreeRoot} ${namesTreeRoot}`);
+    console.log(`>>> npx hardhat verify --network mainnet ${grimoire.address.toLowerCase()}${traitsTreeRoot} ${namesTreeRoot}`);
 
     return c;
 }
