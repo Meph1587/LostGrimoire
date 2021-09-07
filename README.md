@@ -29,11 +29,11 @@ The contract has public endpoints to query traits and affinities for wizards:
 
 `getAffinityOccurrences(uint16 affinityId)`returns the occurrence of an affinity across the entire collection (rarity)
 
-`getWizardAffinities(uint256 wizardId)` returns the list of affinities of a wizard based on
+`getWizardAffinities(uint256 wizardId)` returns the list of affinities of a wizard based 
 
-`getWizardIdentityAffinities(uint256 wizardId)` returns the list of identity affinities of a wizard based
+`getWizardIdentityAffinities(uint256 wizardId)` returns the list of identity affinities of a wizard
 
-`getWizardPositiveAffinities(uint256 wizardId)` returns the list of positive affinities of a wizard based
+`getWizardPositiveAffinities(uint256 wizardId)` returns the list of positive affinities of a wizard
 
 `getWizardAffinityCount(uint256 wizardId, uint16 affinity)` returns how many times a wizard has an affinity
 
@@ -45,14 +45,23 @@ The contract has public endpoints to query traits and affinities for wizards:
 
 `hasTraitsStored(uint256 wizardId)` returns if the wizard has traits stored
 
+## Deployment Setup
+Create a `.env` file with the following parameters:  
+  
+`ETHERSCAN_API_KEY=<Etherscan API Key>`  
+`RINEKBY_API=<Alchemy or Infura node>`  
+`MAINNET_API=<Alchemy or Infura node>`   
+`PRIVATE_KEY = <A Private key for the deployer account>`   
+`FORKING_ENABLED=<true| false>`  
+ 
+In `./scripts/run_deploy` set the address of the deployer account
+ 
 ## Commands
-
-Set environment variables in a new `.env` file
 
 Install dependencies  
 `npm install`
 
-Run Decoder to generate source files
+Run Decoder to generate source files  
 `yarn decode`
 
 Run tests  
