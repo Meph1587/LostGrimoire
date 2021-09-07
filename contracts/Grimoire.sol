@@ -3,7 +3,6 @@ pragma solidity ^0.8.7;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-import "hardhat/console.sol";
 
 contract Grimoire {
     mapping(uint256 => bool) public hasTraitsStored;
