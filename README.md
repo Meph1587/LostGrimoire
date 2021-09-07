@@ -2,6 +2,11 @@
 
 _At Zaros Oasis an old book was found buried deep beneath the dunes, it had ten thousand pages describing wizards and their runes_
 
+## Contracts
+
+Rinkeby deployment: https://rinkeby.etherscan.io/address/0xe5a0b43035f0cf0b577d176ffc9a3ff307205af3#readContract  
+Mainnet deployment: _Coming soon_
+
 ## Introduction
 
 This is a storage contract for the traits and affinities of _Forgotten Runes Wizard Cult_ wizards.
