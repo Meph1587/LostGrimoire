@@ -29,7 +29,7 @@ The contract has public endpoints to query traits and affinities for wizards:
 
 `getAffinityOccurrences(uint16 affinityId)`returns the occurrence of an affinity across the entire collection (rarity)
 
-`getWizardAffinities(uint256 wizardId)` returns the list of affinities of a wizard based 
+`getWizardAffinities(uint256 wizardId)` returns the list of affinities of a wizard based
 
 `getWizardIdentityAffinities(uint256 wizardId)` returns the list of identity affinities of a wizard
 
@@ -46,16 +46,15 @@ The contract has public endpoints to query traits and affinities for wizards:
 `hasTraitsStored(uint256 wizardId)` returns if the wizard has traits stored
 
 ## Deployment Setup
-Create a `.env` file with the following parameters:  
-  
+
+Create a `.env` file with the following parameters:
+
 `ETHERSCAN_API_KEY=<Etherscan API Key>`  
 `RINEKBY_API=<Alchemy or Infura node>`  
-`MAINNET_API=<Alchemy or Infura node>`   
-`PRIVATE_KEY = <A Private key for the deployer account>`   
-`FORKING_ENABLED=<true| false>`  
- 
-In `./scripts/run_deploy` set the address of the deployer account
- 
+`MAINNET_API=<Alchemy or Infura node>`  
+`PRIVATE_KEY = <A Private key for the deployer account>`  
+`DEPLOYER_ADDRESS = <Address od deployer account>`
+
 ## Commands
 
 Install dependencies  

@@ -7,10 +7,14 @@ import {
 } from "../../typechain";
 
 export async function deployConfig(owner:string): Promise<DeployConfig> {
-
-    // For network forking use getAccount()
-    //return new DeployConfig(owner, await getAccount(owner))
-    return new DeployConfig(owner, await impersonateAccount(owner))
+    
+    let account;
+    try{
+        account = await getAccount(owner)
+    }catch{
+        account = await impersonateAccount(owner)
+    }
+    return new DeployConfig(owner, account)
 }
 
 export class DeployConfig {

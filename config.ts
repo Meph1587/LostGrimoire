@@ -53,7 +53,7 @@ export const networks: NetworksUserConfig = {
         hardfork: 'london',
         forking: {
             url: process.env.RINEKBY_API,
-            enabled: (process.env.FORKING_ENABLED) ? (process.env.FORKING_ENABLED == "true") : false
+            enabled: false
         }
     },
 
