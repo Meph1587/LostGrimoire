@@ -100,6 +100,25 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      }
+    ],
+    "name": "getTraitName",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint16",
         "name": "traitId",
         "type": "uint16"
@@ -303,24 +322,6 @@
   {
     "inputs": [],
     "name": "stopStoring",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint16[]",
-        "name": "affinities",
-        "type": "uint16[]"
-      },
-      {
-        "internalType": "uint16[]",
-        "name": "occurrences",
-        "type": "uint16[]"
-      }
-    ],
-    "name": "storeAffinityOccurrences",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
