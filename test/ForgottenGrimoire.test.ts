@@ -37,6 +37,25 @@ describe("Grimoire", function () {
         
     });
 
+    describe("when reading constants =>", function () {
+        it("returns correct trait names", async function () {
+            expect(await storage.getTraitName(0)).to.be.eq("Black")
+            expect(await storage.getTraitName(1)).to.be.eq("Blue")
+            expect(await storage.getTraitName(20)).to.be.eq("Purple Caped Traveller")
+        });
+
+        it("returns correct affinity occurrences", async function () {
+            let affinityOccurrences = [372, 119, 122, 313, 198, 118];
+
+
+            expect( await storage.getAffinityOccurrences(0)).to.be.equal(affinityOccurrences[0])
+            expect( await storage.getAffinityOccurrences(1)).to.be.equal(affinityOccurrences[1])
+            expect( await storage.getAffinityOccurrences(2)).to.be.equal(affinityOccurrences[2])
+            expect( await storage.getAffinityOccurrences(3)).to.be.equal(affinityOccurrences[3])
+            expect( await storage.getAffinityOccurrences(4)).to.be.equal(affinityOccurrences[4])
+        });
+    });
+
     describe("when storing traits =>", function () {
         it("can store with valid proofs", async function () {
             let wizardId = 6725;
@@ -53,8 +72,7 @@ describe("Grimoire", function () {
                 validProofName, 
                 validProofTraits
             )
-
-            expect(await storage.hasTraitsStored(wizardId)).to.be.true;
+        
             let returnedTraits = await storage.getWizardTraits(wizardId)
             
             expect(returnedTraits.t0).to.be.eq(wizardTraits[1])
@@ -185,31 +203,7 @@ describe("Grimoire", function () {
         });
     })
 
-    describe("when storing occurrences =>", function () {
-        it("can store occurrences during store period", async function () {
-            let affinitiesId = [0,1,2,3,4,5];
-            let affinityOccurrences = [372, 119, 122, 313, 198, 118];
-
-            await storage.storeAffinityOccurrences(affinitiesId, affinityOccurrences)
-
-
-            expect( await storage.getAffinityOccurrences(0)).to.be.equal(affinityOccurrences[0])
-            expect( await storage.getAffinityOccurrences(1)).to.be.equal(affinityOccurrences[1])
-            expect( await storage.getAffinityOccurrences(2)).to.be.equal(affinityOccurrences[2])
-            expect( await storage.getAffinityOccurrences(3)).to.be.equal(affinityOccurrences[3])
-            expect( await storage.getAffinityOccurrences(4)).to.be.equal(affinityOccurrences[4])
-        });
-
-        it("can not store occurrences after store period", async function () {
-            let affinitiesId = [0,1,2,3,4,5];
-            let affinityOccurrences = [372, 119, 122, 313, 198, 118];
-
-            await storage.stopStoring();
-            await expect(
-                storage.storeAffinityOccurrences(affinitiesId, affinityOccurrences)
-            ).to.be.reverted;
-        });
-    })
+    
 
 });
 
