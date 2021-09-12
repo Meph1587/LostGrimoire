@@ -4,7 +4,6 @@ import {
     Grimoire as FG,
 } from "../../typechain";
 
-const affinityToOccurrences = require("../../data/occurrence.json");
 const traitsToAffinities = require("../../data/affinities.json");
 //const Grimoire = require( "../../abi/Grimoire.json")
 
@@ -18,28 +17,7 @@ export async function storeAffinities(c: DeployConfig): Promise<DeployConfig> {
             Grimoire,
             c.ownerAcc
         ) as FG
-    */
-
-    console.log(`\n --- STORE: AFFINITIES => OCCURRENCES ---`);
-    
-    let affinitiesGrouped = [[]]
-    let occurrencesGrouped = [[]]
-    for (let i=0; i < 286;i++){
-        affinitiesGrouped[affinitiesGrouped.length -1].push(i)
-        occurrencesGrouped[occurrencesGrouped.length -1].push(affinityToOccurrences.occurrences[i])
-        if(i==100 || i==200){
-            affinitiesGrouped.push([])
-            occurrencesGrouped.push([])
-        }
-    }
-
-    for (let i=0; i < affinitiesGrouped.length;i++){
-        let tx = await storage.storeAffinityOccurrences(affinitiesGrouped[i], occurrencesGrouped[i])
-        await tx.wait()
-        console.log(`Grimoire: occurrences stored on ids from: ${i*100} to ${(i*100+100)}`)
-    };
-        
-
+    */  
 
     console.log(`\n --- STORE: TRAITS => AFFINITIES ---`);
 
