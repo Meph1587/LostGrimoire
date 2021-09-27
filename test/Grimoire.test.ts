@@ -9,7 +9,6 @@ import { proofName, proofTraits} from "../scripts/helpers/merkletree";
 
 const wizardsToTraits = require("../data/traits.json");
 const traitsToAffinities = require("../data/affinities.json");
-const affinityToOccurrences = require("../data/occurrence.json");
 
 
 describe("Grimoire", function () {
@@ -33,7 +32,6 @@ describe("Grimoire", function () {
         traits = traitsToAffinities.traits;
         affinitiesForTraits = traitsToAffinities.affinities;
 
-        occurrences = affinityToOccurrences.occurrences;
         
     });
 
