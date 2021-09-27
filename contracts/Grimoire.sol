@@ -405,6 +405,65 @@ contract Grimoire {
         return traitsToAffinities[traitId];
     }
 
+    function getAllTraitsAffinities(uint16[5] memory traitId)
+        public
+        view
+        returns (uint16[] memory)
+    {
+        uint16[] storage affinityT1 = traitsToAffinities[traitId[0]];
+        uint16[] storage affinityT2 = traitsToAffinities[traitId[1]];
+        uint16[] storage affinityT3 = traitsToAffinities[traitId[2]];
+        uint16[] storage affinityT4 = traitsToAffinities[traitId[3]];
+        uint16[] storage affinityT5 = traitsToAffinities[traitId[4]];
+
+        uint16[] memory affinitiesList = new uint16[](
+            affinityT1.length +
+                affinityT2.length +
+                affinityT3.length +
+                affinityT4.length +
+                affinityT5.length
+        );
+
+        uint256 lastIndexWritten = 0;
+
+        // 7777 is used as a filler for empty Trait slots
+        if (traitId[0] != 7777) {
+            for (uint256 i = 0; i < affinityT1.length; i++) {
+                affinitiesList[i] = affinityT1[i];
+            }
+            lastIndexWritten = lastIndexWritten + affinityT1.length;
+        }
+
+        if (traitId[1] != 7777) {
+            for (uint256 i = 0; i < affinityT2.length; i++) {
+                affinitiesList[lastIndexWritten + i] = affinityT2[i];
+            }
+            lastIndexWritten = lastIndexWritten + affinityT2.length;
+        }
+
+        if (traitId[2] != 7777) {
+            for (uint8 i = 0; i < affinityT3.length; i++) {
+                affinitiesList[lastIndexWritten + i] = affinityT3[i];
+            }
+            lastIndexWritten = lastIndexWritten + affinityT3.length;
+        }
+
+        if (traitId[3] != 7777) {
+            for (uint8 i = 0; i < affinityT4.length; i++) {
+                affinitiesList[lastIndexWritten + i] = affinityT4[i];
+            }
+            lastIndexWritten = lastIndexWritten + affinityT4.length;
+        }
+
+        if (traitId[4] != 7777) {
+            for (uint8 i = 0; i < affinityT5.length; i++) {
+                affinitiesList[lastIndexWritten + i] = affinityT5[i];
+            }
+        }
+
+        return affinitiesList;
+    }
+
     function getTraitIdentityAffinities(uint16 traitId)
         public
         view
@@ -512,58 +571,7 @@ contract Grimoire {
             wizardToTraits[wizardId]
         );
 
-        uint16[] storage affinityT1 = traitsToAffinities[t1];
-        uint16[] storage affinityT2 = traitsToAffinities[t2];
-        uint16[] storage affinityT3 = traitsToAffinities[t3];
-        uint16[] storage affinityT4 = traitsToAffinities[t4];
-        uint16[] storage affinityT5 = traitsToAffinities[t5];
-
-        uint16[] memory affinitiesList = new uint16[](
-            affinityT1.length +
-                affinityT2.length +
-                affinityT3.length +
-                affinityT4.length +
-                affinityT5.length
-        );
-
-        uint256 lastIndexWritten = 0;
-
-        // 7777 is used as a filler for empty Trait slots
-        if (t1 != 7777) {
-            for (uint256 i = 0; i < affinityT1.length; i++) {
-                affinitiesList[i] = affinityT1[i];
-            }
-            lastIndexWritten = lastIndexWritten + affinityT1.length;
-        }
-
-        if (t2 != 7777) {
-            for (uint256 i = 0; i < affinityT2.length; i++) {
-                affinitiesList[lastIndexWritten + i] = affinityT2[i];
-            }
-            lastIndexWritten = lastIndexWritten + affinityT2.length;
-        }
-
-        if (t3 != 7777) {
-            for (uint8 i = 0; i < affinityT3.length; i++) {
-                affinitiesList[lastIndexWritten + i] = affinityT3[i];
-            }
-            lastIndexWritten = lastIndexWritten + affinityT3.length;
-        }
-
-        if (t4 != 7777) {
-            for (uint8 i = 0; i < affinityT4.length; i++) {
-                affinitiesList[lastIndexWritten + i] = affinityT4[i];
-            }
-            lastIndexWritten = lastIndexWritten + affinityT4.length;
-        }
-
-        if (t5 != 7777) {
-            for (uint8 i = 0; i < affinityT5.length; i++) {
-                affinitiesList[lastIndexWritten + i] = affinityT5[i];
-            }
-        }
-
-        return affinitiesList;
+        return getAllTraitsAffinities([t1, t2, t3, t4, t5]);
     }
 
     function getWizardIdentityAffinities(uint256 wizardId)

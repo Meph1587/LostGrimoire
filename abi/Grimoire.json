@@ -62,6 +62,25 @@
   {
     "inputs": [
       {
+        "internalType": "uint16[5]",
+        "name": "traitId",
+        "type": "uint16[5]"
+      }
+    ],
+    "name": "getAllTraitsAffinities",
+    "outputs": [
+      {
+        "internalType": "uint16[]",
+        "name": "",
+        "type": "uint16[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint16",
         "name": "traitId",
         "type": "uint16"
