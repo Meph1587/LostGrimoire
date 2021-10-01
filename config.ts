@@ -20,6 +20,10 @@ export const networks: NetworksUserConfig = {
     // Needed for `solidity-coverage`
     coverage: {
         url: 'http://localhost:8555',
+        gas: 'auto',
+        hardfork: 'london', 
+        initialBaseFeePerGas: 1,
+        gasPrice: 2,
     },
 
     ganache: {
@@ -51,6 +55,8 @@ export const networks: NetworksUserConfig = {
             auto: true
         },
         hardfork: 'london',
+        initialBaseFeePerGas: 1,
+        gasPrice: 2,
         forking: {
             url: process.env.RINEKBY_API,
             enabled: false
