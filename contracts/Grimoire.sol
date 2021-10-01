@@ -313,7 +313,6 @@ contract Grimoire {
     mapping(uint16 => uint16[]) private traitsToAffinities;
     mapping(uint16 => uint16[]) private traitsToIdentity;
     mapping(uint16 => uint16[]) private traitsToPositive;
-    //mapping(uint16 => uint16) private affinityOccurrences;
 
     event StoredTrait(uint256 wizardId, string name, bytes encodedTraits);
 
