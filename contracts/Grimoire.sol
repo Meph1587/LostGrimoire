@@ -383,6 +383,14 @@ contract Grimoire {
         VIEWS
      */
 
+    function getWizardName(uint256 wizardId)
+        public
+        view
+        returns (string memory)
+    {
+        return wizardToName[wizardId];
+    }
+
     function getWizardTraits(uint256 wizardId)
         public
         view
@@ -397,6 +405,30 @@ contract Grimoire {
     {
         //ignore id
         (, t0, t1, t2, t3, t4, t5) = _decode(wizardToTraits[wizardId]);
+    }
+
+    function getWizardHasTrait(uint256 wizardId, uint16 trait)
+        public
+        view
+        returns (bool)
+    {
+        (
+            ,
+            uint16 t0,
+            uint16 t1,
+            uint16 t2,
+            uint16 t3,
+            uint16 t4,
+            uint16 t5
+        ) = _decode(wizardToTraits[wizardId]);
+        uint16[6] memory wizTraits = [t0, t1, t2, t3, t4, t5];
+
+        for (uint8 i = 0; i < wizTraits.length; i++) {
+            if (wizTraits[i] == trait) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function getTraitAffinities(uint16 traitId)
@@ -486,15 +518,7 @@ contract Grimoire {
         return affinityOccurrences[id];
     }
 
-    function getWizardName(uint256 wizardId)
-        public
-        view
-        returns (string memory)
-    {
-        return wizardToName[wizardId];
-    }
-
-    function wizardAffintyCount(uint256 wizardId, uint16 affinity)
+    function getWizardAffintyCount(uint256 wizardId, uint16 affinity)
         public
         view
         returns (uint256 affinityCount)
@@ -509,7 +533,7 @@ contract Grimoire {
         }
     }
 
-    function wizardIdentityAffintyCount(uint256 wizardId, uint16 affinity)
+    function getWizardIdentityAffintyCount(uint256 wizardId, uint16 affinity)
         public
         view
         returns (uint256 affinityCount)
@@ -524,7 +548,7 @@ contract Grimoire {
         }
     }
 
-    function wizardPositiveAffintyCount(uint256 wizardId, uint16 affinity)
+    function getWizardPositiveAffintyCount(uint256 wizardId, uint16 affinity)
         public
         view
         returns (uint256 affinityCount)
@@ -537,30 +561,6 @@ contract Grimoire {
                 affinityCount += 1;
             }
         }
-    }
-
-    function wizardHasTrait(uint256 wizardId, uint16 trait)
-        public
-        view
-        returns (bool)
-    {
-        (
-            ,
-            uint16 t0,
-            uint16 t1,
-            uint16 t2,
-            uint16 t3,
-            uint16 t4,
-            uint16 t5
-        ) = _decode(wizardToTraits[wizardId]);
-        uint16[6] memory wizTraits = [t0, t1, t2, t3, t4, t5];
-
-        for (uint8 i = 0; i < wizTraits.length; i++) {
-            if (wizTraits[i] == trait) {
-                return true;
-            }
-        }
-        return false;
     }
 
     function getWizardAffinities(uint256 wizardId)

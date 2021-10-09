@@ -90,9 +90,9 @@ describe("Grimoire", function () {
 
             expect(await storage.getWizardName(wizardId)).to.be.eq(wizardName[1])
 
+            expect(await storage.getWizardTraitsEncoded(wizardId)).to.be.eq("0x00001a450000001c006e00be014c0120");
 
-
-            expect(await storage.wizardHasTrait(wizardId, 28)).to.be.true;
+            expect(await storage.getWizardHasTrait(wizardId, 28)).to.be.true;
         });
 
         it("can not store with invalid trait proof", async function () {
@@ -284,32 +284,29 @@ describe("Grimoire", function () {
 
         it("all affinity count read methods return correct", async function () {
             
-            expect( await storage.wizardAffintyCount(6725,174)).to.be.eq(2)
-            expect( await storage.wizardAffintyCount(6725,106)).to.be.eq(1)
-            expect( await storage.wizardAffintyCount(6725,100)).to.be.eq(0)
+            expect( await storage.getWizardAffintyCount(6725,174)).to.be.eq(2)
+            expect( await storage.getWizardAffintyCount(6725,106)).to.be.eq(1)
+            expect( await storage.getWizardAffintyCount(6725,100)).to.be.eq(0)
 
 
-            expect( await storage.wizardIdentityAffintyCount(6725,88)).to.be.eq(1)
-            expect( await storage.wizardIdentityAffintyCount(6725,107)).to.be.eq(1)
-            expect( await storage.wizardIdentityAffintyCount(6725,100)).to.be.eq(0)
+            expect( await storage.getWizardIdentityAffintyCount(6725,88)).to.be.eq(1)
+            expect( await storage.getWizardIdentityAffintyCount(6725,107)).to.be.eq(1)
+            expect( await storage.getWizardIdentityAffintyCount(6725,100)).to.be.eq(0)
 
 
-            expect( await storage.wizardPositiveAffintyCount(6725,201)).to.be.eq(2)
-            expect( await storage.wizardPositiveAffintyCount(6725,174)).to.be.eq(2)
-            expect( await storage.wizardPositiveAffintyCount(6725,100)).to.be.eq(0)
+            expect( await storage.getWizardPositiveAffintyCount(6725,201)).to.be.eq(2)
+            expect( await storage.getWizardPositiveAffintyCount(6725,174)).to.be.eq(2)
+            expect( await storage.getWizardPositiveAffintyCount(6725,100)).to.be.eq(0)
                                                                              
             expect((await storage.getWizardIdentityAffinities(6725)).toString()).to.be.eq("82,25,174,106,199,25,153,88,107,201,174,234,161,13,196,282,210,89")
             expect((await storage.getWizardPositiveAffinities(6725)).toString()).to.be.eq("82,25,174,106,50,25,215,170,243,107,201,174,13,161,56,196,282,201")
 
 
-            expect( await storage.wizardHasTrait(6725,100)).to.be.false
+            expect( await storage.getWizardHasTrait(6725,100)).to.be.false
             
         });
-        
-        
+                
     }); 
-
-    
 
 });
 

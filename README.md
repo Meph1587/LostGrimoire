@@ -4,7 +4,7 @@ _At Zaros Oasis an old book was found buried deep beneath the dunes, it had ten 
 
 ## Contracts
 
-Rinkeby deployment: https://rinkeby.etherscan.io/address/0xe5a0b43035f0cf0b577d176ffc9a3ff307205af3#readContract  
+Rinkeby deployment: https://rinkeby.etherscan.io/address/0x11398bf5967Cd37BC2482e0f4E111cb93D230B05#readContract  
 Mainnet deployment: _Coming soon_
 
 ## Introduction
@@ -22,19 +22,21 @@ A frontend tool to generate the Merkle Proofs and cosntruct the Verification tra
 
 The contract has public endpoints to query traits and affinities for wizards:
 
-`getWizardTraits(uint256 wizardId)` returns all traits in order: _background, body, familiar, head, rune, prop_
+### Wizard Data
 
 `getWizardName(uint256 wizardId)` returns the name of the wizard
 
-`getTraitIdentityAffinities(uint16 traitId)` returns all identity affinities for a given trait
+`hasTraitsStored(uint256 wizardId)` returns if the wizard has traits stored
 
-`getTraitPositiveAffinities(uint16 traitId)` returns all positive affinities for a given trait
+_Wizard Traits_
 
-`getTraitAffinities(uint16 traitId)` returns all affinities for a given trait (de-duplicated)
+`getWizardTraits(uint256 wizardId)` returns all traits in order: _background, body, familiar, head, rune, prop_
 
-`getAffinityOccurrences(uint16 affinityId)`returns the occurrence of an affinity across the entire collection (rarity)
+`getWizardHasTrait(uint256 wizardId, uint16 trait)` returns if the wizard has a trait or not
 
-`getWizardAffinities(uint256 wizardId)` returns the list of affinities of a wizard based
+_Wizard Affinities_
+
+`getWizardAffinities(uint256 wizardId)` returns the list of affinities of a wizard
 
 `getWizardIdentityAffinities(uint256 wizardId)` returns the list of identity affinities of a wizard
 
@@ -46,9 +48,23 @@ The contract has public endpoints to query traits and affinities for wizards:
 
 `getWizardPositiveAffinityCount(uint256 wizardId, uint16 affinity)` returns how many times a wizard has an positive affinity
 
-`wizardHasTrait(uint256 wizardId, uint16 trait)` returns if the wizard has a trait or not
+### Traits Data
 
-`hasTraitsStored(uint256 wizardId)` returns if the wizard has traits stored
+`getTraitName(uint256 traitId)` returns the name of the given trait
+
+`getTraitAffinities(uint16 traitId)` returns all affinities for a given trait (de-duplicated)
+
+`getAllTraitsAffinities(uint16[5] traitId)` returns all affinities for the given trait list (de-duplicated)
+
+`getTraitIdentityAffinities(uint16 traitId)` returns all identity affinities for a given trait
+
+`getTraitPositiveAffinities(uint16 traitId)` returns all positive affinities for a given trait
+
+### Affinities Data
+
+`getAffinityName(uint256 affinityId)` returns the name of the given affinity
+
+`getAffinityOccurrences(uint16 affinityId)`returns the occurrence of an affinity across the entire collection (rarity)
 
 ## Deployment Setup
 
