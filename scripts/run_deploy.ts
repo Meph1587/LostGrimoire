@@ -1,4 +1,3 @@
-
 import {deployConfig} from "./deployment/define-0-config";
 import {deployStorage} from "./deployment/define-1-deploy-storage";
 import {storeAffinities} from "./deployment/define-2-store-affinities";

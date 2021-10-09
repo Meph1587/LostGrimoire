@@ -43,6 +43,25 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      }
+    ],
+    "name": "getAffinityName",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint16",
         "name": "id",
         "type": "uint16"
@@ -179,6 +198,54 @@
         "internalType": "uint256",
         "name": "wizardId",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint16",
+        "name": "affinity",
+        "type": "uint16"
+      }
+    ],
+    "name": "getWizardAffintyCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "affinityCount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "wizardId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint16",
+        "name": "trait",
+        "type": "uint16"
+      }
+    ],
+    "name": "getWizardHasTrait",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "wizardId",
+        "type": "uint256"
       }
     ],
     "name": "getWizardIdentityAffinities",
@@ -187,6 +254,30 @@
         "internalType": "uint16[]",
         "name": "",
         "type": "uint16[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "wizardId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint16",
+        "name": "affinity",
+        "type": "uint16"
+      }
+    ],
+    "name": "getWizardIdentityAffintyCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "affinityCount",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -225,6 +316,30 @@
         "internalType": "uint16[]",
         "name": "",
         "type": "uint16[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "wizardId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint16",
+        "name": "affinity",
+        "type": "uint16"
+      }
+    ],
+    "name": "getWizardPositiveAffintyCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "affinityCount",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -404,102 +519,6 @@
     "name": "storeWizardTraits",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "wizardId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint16",
-        "name": "affinity",
-        "type": "uint16"
-      }
-    ],
-    "name": "wizardAffintyCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "affinityCount",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "wizardId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint16",
-        "name": "trait",
-        "type": "uint16"
-      }
-    ],
-    "name": "wizardHasTrait",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "wizardId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint16",
-        "name": "affinity",
-        "type": "uint16"
-      }
-    ],
-    "name": "wizardIdentityAffintyCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "affinityCount",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "wizardId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint16",
-        "name": "affinity",
-        "type": "uint16"
-      }
-    ],
-    "name": "wizardPositiveAffintyCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "affinityCount",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   }
 ]
