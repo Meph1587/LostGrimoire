@@ -7,6 +7,8 @@ import { makeTreeFromTraits,makeTreeFromNames} from "../scripts/helpers/merkletr
 import { getProofForTraits, getProofForName} from "../scripts/helpers/merkletree";
 import { proofName, proofTraits} from "../scripts/helpers/merkletree";
 
+import { ethers } from 'hardhat';
+
 const wizardsToTraits = require("../data/traits.json");
 const traitsToAffinities = require("../data/affinities.json");
 
@@ -59,6 +61,16 @@ describe("Grimoire", function () {
             expect( await storage.getAffinityOccurrences(2)).to.be.equal(affinityOccurrences[2])
             expect( await storage.getAffinityOccurrences(3)).to.be.equal(affinityOccurrences[3])
             expect( await storage.getAffinityOccurrences(4)).to.be.equal(affinityOccurrences[4])
+        });
+
+        it("returns correct trait occurrences", async function () {
+            let affinityOccurrences = [3719, 3155, 2085, 1041, 1, 159];
+            expect( await storage.getTraitOccurrences(0)).to.be.equal(affinityOccurrences[0])
+            expect( await storage.getTraitOccurrences(1)).to.be.equal(affinityOccurrences[1])
+            expect( await storage.getTraitOccurrences(2)).to.be.equal(affinityOccurrences[2])
+            expect( await storage.getTraitOccurrences(3)).to.be.equal(affinityOccurrences[3])
+            expect( await storage.getTraitOccurrences(4)).to.be.equal(affinityOccurrences[4])
+            expect( await storage.getTraitOccurrences(5)).to.be.equal(affinityOccurrences[5])
         });
     });
 
@@ -236,6 +248,38 @@ describe("Grimoire", function () {
                     traitsChunked[0], affinitiesChunked[0], identityChunked[0], positiveChunked[0]
                 )
             ).to.be.revertedWith("Storing is over");
+        });
+
+        it("can not store affinities as other user", async function () {
+            let traitIds = traits;
+            let affinities:number [][] = []
+            let identity:number [][]  = []
+            let positive:number [][]  = []
+            affinitiesForTraits.forEach(e =>{
+                    identity.push(e[0])
+                    positive.push(e[1])
+                    affinities.push(e[0].concat(e[1]))
+                });
+           //deduplicate for affinities both identity and positive
+            let filteredAffinities = []
+            affinities.forEach(sublist =>{
+                filteredAffinities.push(sublist.filter((element, i) => i === sublist.indexOf(element)))
+            }) 
+            let traitsChunked = splitToChunks(traitIds, 50)
+            let affinitiesChunked  = splitToChunks(filteredAffinities, 50)
+            let identityChunked  = splitToChunks(identity, 50)
+            let positiveChunked  = splitToChunks(positive, 50)
+            
+            let otherUser = (await ethers.getSigners())[1];
+            await expect(
+                storage.connect(otherUser).storeTraitAffinities(
+                    traitsChunked[0], affinitiesChunked[0], identityChunked[0], positiveChunked[0]
+                )
+            ).to.be.revertedWith("Not Storage Master");
+
+            await expect(
+                storage.connect(otherUser).stopStoring()
+            ).to.be.revertedWith("Not Storage Master");
         });
     })
 
