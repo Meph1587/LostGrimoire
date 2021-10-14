@@ -52,6 +52,8 @@ _Wizard Affinities_
 
 `getTraitName(uint256 traitId)` returns the name of the given trait
 
+`getTraitOccurrences(uint256 traitId)` returns the occurrence of a trait across the entire collection (rarity)
+
 `getTraitAffinities(uint16 traitId)` returns all affinities for a given trait (de-duplicated)
 
 `getAllTraitsAffinities(uint16[5] traitId)` returns all affinities for the given trait list (de-duplicated)
