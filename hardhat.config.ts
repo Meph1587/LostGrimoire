@@ -45,6 +45,7 @@ const cfg: HardhatUserConfig = {
 
     gasReporter: {
         enabled: (process.env.REPORT_GAS) ? true : false,
+        gasPrice: 21
     },
 
     paths: {

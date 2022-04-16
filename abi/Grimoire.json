@@ -43,19 +43,6 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "c__0x1622dcc8",
-        "type": "bytes32"
-      }
-    ],
-    "name": "c_0x1622dcc8",
-    "outputs": [],
-    "stateMutability": "pure",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint256",
         "name": "index",
         "type": "uint256"
